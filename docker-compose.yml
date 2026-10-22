@@ -6,6 +6,16 @@ services:
     read_only: true
     ports:
       - "127.0.0.1:8765:8765"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.correo-studio.rule=Host(`correo-studio.compararprecio.com`)
+      - traefik.http.routers.correo-studio.entrypoints=websecure
+      - traefik.http.routers.correo-studio.tls.certresolver=mytlschallenge
+      - traefik.http.services.correo-studio.loadbalancer.server.port=8765
+      - traefik.docker.network=ingress
+    networks:
+      - default
+      - ingress
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -16,3 +26,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
+networks:
+  ingress:
+    external: true
