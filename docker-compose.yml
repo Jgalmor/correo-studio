@@ -8,7 +8,7 @@ services:
       - "127.0.0.1:8765:8765"
     labels:
       - traefik.enable=true
-      - traefik.docker.network=traefik-proxy
+      - traefik.docker.network=root_default
       - traefik.http.routers.correo-studio.rule=Host(`correo-studio.compararprecio.com`)
       - traefik.http.routers.correo-studio.entrypoints=websecure
       - traefik.http.routers.correo-studio.tls=true
@@ -16,7 +16,7 @@ services:
       - traefik.http.services.correo-studio.loadbalancer.server.port=8765
     networks:
       - default
-      - traefik-proxy
+      - root_default
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -29,5 +29,5 @@ services:
       start_period: 10s
 
 networks:
-  traefik-proxy:
+  root_default:
     external: true
