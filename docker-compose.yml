@@ -12,7 +12,7 @@ services:
       - traefik.http.routers.correo-studio.rule=Host(`correo-studio.compararprecio.com`)
       - traefik.http.routers.correo-studio.entrypoints=websecure
       - traefik.http.routers.correo-studio.tls=true
-      - traefik.http.routers.correo-studio.tls.certresolver=letsencrypt
+      - traefik.http.routers.correo-studio.tls.certresolver=mytlschallenge
       - traefik.http.services.correo-studio.loadbalancer.server.port=8765
     networks:
       - default
