@@ -11,6 +11,27 @@ python server.py --port 8765
 
 Abre `http://127.0.0.1:8765`, introduce la URL del anunciante y pulsa **Crear mi email**. Tras revisar el resultado, usa **Descargar HTML**. Solo necesita Python 3.11+; no requiere paquetes externos.
 
+## Despliegue con Docker Compose (VPS)
+
+En la carpeta clonada del repositorio:
+
+```bash
+docker compose up -d --build
+docker compose ps
+curl -f http://127.0.0.1:8765/
+```
+
+El contenedor escucha en `0.0.0.0:8765`, pero Compose publica el puerto **solo en `127.0.0.1:8765` del VPS**. Coloca delante un proxy HTTPS en el mismo VPS si quieres acceder desde Internet. No publiques el puerto directamente: este prototipo aún no incorpora autenticación ni límites de peticiones. La ruta `POST /api/generate` debe llegar al mismo servicio; subir únicamente `index.html` a otro hosting no basta.
+
+Para actualizarlo tras nuevos cambios en GitHub:
+
+```bash
+git pull --ff-only origin main
+docker compose up -d --build
+```
+
+Si el puerto 8765 del VPS ya está ocupado, cambia **solo el primer** `8765` de `ports` en `docker-compose.yml` y ajusta el destino del proxy. La comprobación de salud y el puerto interno siguen en 8765.
+
 ## Antes de enviar
 
 - Sustituye `{{unsubscribe_url}}` y `{{sender_address}}` por los campos propios de tu ESP. El HTML no incluye asunto ni gestiona envíos.
